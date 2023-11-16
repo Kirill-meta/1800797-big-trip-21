@@ -1,4 +1,4 @@
-import { createElement } from '../../render.js';
+import { humanizeDate } from '../../utils.js';
 import AbstractView from '../../framework/view/abstract-view.js';
 import PointOfferView from './points/point-offer-view.js';
 
@@ -6,16 +6,16 @@ function createPointViewTemplate(event, dest, offer) {
   return `
   <li class="trip-events__item">
   <div class="event">
-    <time class="event__date" datetime="2019-03-18">${event.date_from}</time>
+    <time class="event__date" datetime="2019-03-18">${humanizeDate(event.date_from)}</time>
     <div class="event__type">
       <img class="event__type-icon" width="42" height="42" src="img/icons/${event.type}.png" alt="Event type icon">
     </div>
     <h3 class="event__title">${event.type} ${dest.getById(event.destination).name}</h3>
     <div class="event__schedule">
       <p class="event__time">
-        <time class="event__start-time" datetime="2019-03-18T10:30">10:30</time>
+        <time class="event__start-time" datetime="2019-03-18T10:30">${humanizeDate(event.date_from)}</time>
         &mdash;
-        <time class="event__end-time" datetime="2019-03-18T11:00">11:00</time>
+        <time class="event__end-time" datetime="2019-03-18T11:00">${humanizeDate(event.date_to)}</time>
       </p>
       <p class="event__duration">30M</p>
     </div>

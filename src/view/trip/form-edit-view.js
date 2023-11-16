@@ -1,4 +1,5 @@
-import { createElement } from '../../render.js';
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
 import FormOfferView from './form-offer-view.js';
 import AbstractStatefulView from '../../framework/view/abstract-stateful-view.js';
 
@@ -167,6 +168,8 @@ export default class FormEditView extends AbstractStatefulView {
   #updatePoint;
   #deletePoint;
   #newPointMode = null;
+  #datePickerFrom = null;
+  #datePickerTo = null;
   constructor({
     point,
     destinations,
@@ -199,7 +202,48 @@ export default class FormEditView extends AbstractStatefulView {
     if (this.element.querySelector('.event-delete')) {
       this.element.querySelector('.event-delete').addEventListener('click', this.#onDelete);
     }
+    this.#setDatePicker();
   }
+
+  #setDatePicker = () => {
+    this.#datePickerFrom = flatpickr(this.element.querySelector('#event-start-time-1'), {
+      dateFormat: 'Y-m-dTH:i:00.000\\Z',
+      altInput: true,
+      enableTime: true,
+      altFormat: 'd/m/Y H:i',
+      defaultDate: this._state.point.date_from,
+      onChange: this.#dateFromChangeHandler,
+    });
+    this.#datePickerTo = flatpickr(this.element.querySelector('#event-end-time-1'), {
+      dateFormat: 'Y-m-dTH:i:00.000\\Z',
+      enableTime: true,
+      altFormat: 'd/m/Y H:i',
+      altInput: true,
+      defaultDate: this._state.point.date_to,
+      onChange: this.#dateToChangeHandler,});
+  };
+
+  #dateFromChangeHandler = ([userDate], dateStr) => {
+
+    this.updateElement({
+
+      point: {
+        ...this._state.point,
+        date_from: dateStr
+      }
+    });
+
+  };
+
+  #dateToChangeHandler = ([userDate], dateStr) => {
+    this.updateElement({
+
+      point: {
+        ...this._state.point,
+        date_to: dateStr
+      }
+    });
+  };
 
   #pickOffersHandler = (evt) => {
     console.log(evt.target.dataset.id);

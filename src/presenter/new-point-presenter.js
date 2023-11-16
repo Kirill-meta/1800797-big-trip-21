@@ -5,8 +5,8 @@ import { UserAction, UpdateType } from '../constance.js';
 
 const newPoint = {
   base_price: 0,
-  date_from: '2024-01-06T00:00:02.106Z',
-  date_to: '2024-01-06T15:10:02.106Z',
+  date_from: null,
+  date_to: null,
   destination: null,
   is_favorite: false,
   offers: null,
