@@ -1,4 +1,4 @@
-import { humanizeDate } from '../../utils.js';
+import { humanizeDate, getDuration } from '../../utils.js';
 import AbstractView from '../../framework/view/abstract-view.js';
 import PointOfferView from './points/point-offer-view.js';
 
@@ -17,7 +17,7 @@ function createPointViewTemplate(event, dest, offer) {
         &mdash;
         <time class="event__end-time" datetime="2019-03-18T11:00">${humanizeDate(event.date_to)}</time>
       </p>
-      <p class="event__duration">30M</p>
+      <p class="event__duration">${getDuration(event.date_from, event.date_to)}</p>
     </div>
     <p class="event__price">
       &euro;&nbsp;<span class="event__price-value">${event.base_price}</span>
