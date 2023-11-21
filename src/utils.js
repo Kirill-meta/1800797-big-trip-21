@@ -9,21 +9,30 @@ function getRandomArrayElement(items) {
 const humanizeDate = (date) => date ? dayjs(date).format(DATE_FORMAT) : '';
 
 const getDuration = (date1, date2) => {
-  const hour = 3600000;
-  const day = 86400000;
-  const d1 = dayjs(date1);
-  const d2 = dayjs(date2);
-  const difference = d2.diff(d1);
-  if (difference < hour) {
-    return `${d2.diff(d1, 'minute')}M`;
-  } else if (difference >= hour && difference < day) {
-    console.log(dayjs(difference).format('HH:mm').split(':'));
-    const [hours, minutes] = dayjs(difference).format('HH:mm').split(':')
-    return `${hours}H ${minutes}M`;
-  } else {
-    return `${dayjs(difference).format('DD')}D ${dayjs(difference).format('HH')}H ${dayjs(difference).format('mm')}M`
+  const HOURS_PER_DAY = 24
+  const MINUTES_PER_HOUR = 60
+  const MINUTES_PER_DAY = 60 * HOURS_PER_DAY
+  const DurationUnits = {
+    MINUTE: 'minute',
+    HOUR: 'hour',
+    DAY: 'day'
   }
-};
+
+  const d1 = dayjs(date1)
+  const d2 = dayjs(date2)
+  const differenceMinutes = d2.diff(d1, DurationUnits.MINUTE);
+  const differenceHours = d2.diff(d1, DurationUnits.HOUR);
+  const differenceDays = d2.diff(d1, DurationUnits.DAY);
+
+  switch (true) {
+    case (differenceMinutes < MINUTES_PER_HOUR):
+      return `${differenceMinutes}M`
+    case (differenceMinutes >= MINUTES_PER_HOUR && differenceMinutes < MINUTES_PER_DAY):
+      return `${differenceHours}H ${differenceMinutes - differenceHours * MINUTES_PER_HOUR}M`
+    default:
+      return `${differenceDays}D ${differenceHours - differenceDays * HOURS_PER_DAY}H ${differenceMinutes - differenceHours * MINUTES_PER_HOUR}M`
+  }
+  }
 
 
 
